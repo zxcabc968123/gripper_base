@@ -2,8 +2,10 @@
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
      Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot name="gripper_base" xmlns:xacro="http://www.ros.org/wiki/xacro">>
+<robot name="gripper_base" xmlns:xacro="http://www.ros.org/wiki/xacro">> 
   <xacro:include filename="$(find gripper_base)/urdf/gripper_base.gazebo"/>
+  <!-- <xacro:include filename="$(find fingertest)/urdf/fingertest.xacro"/> -->
+<xacro:macro name="gripper_base" params="parent child *origin">
   <link
     name="gripper_base_link">
     <inertial>
@@ -85,13 +87,11 @@
     </collision>
   </link>
   
-  <link name="world"/>
+  <!-- <link name="world"/> -->
   <joint name="fixed123" type="fixed">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
+    <xacro:insert_block name="origin" />
     <parent
-      link="world" />
+      link="${parent}" />
     <child
       link="gripper_base_link" />
     <axis
@@ -161,9 +161,14 @@
       link="gripper_base_link" />
     <child
       link="r_finger_link" />
+    <!-- <axis
+      xyz="0 0 -1" /> -->
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />  
+      
   </joint>
+
+  
 
   <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
@@ -186,5 +191,6 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-
+<xacro:gripper_base_gazebo/>
+</xacro:macro>
 </robot>
